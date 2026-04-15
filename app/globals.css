@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background-color: #0A0B0D;
+  color: #E8E9EB;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #111318;
+}
+::-webkit-scrollbar-thumb {
+  background: #1F2330;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2E6FBE;
+}
+
+/* Textarea auto-resize helper */
+textarea {
+  field-sizing: content;
+}
+
+/* Markdown content styling */
+.lexis-markdown h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.lexis-markdown h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.375rem;
+}
+.lexis-markdown h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.lexis-markdown p {
+  margin-bottom: 0.625rem;
+  line-height: 1.65;
+}
+.lexis-markdown ul, .lexis-markdown ol {
+  margin-left: 1.25rem;
+  margin-bottom: 0.625rem;
+}
+.lexis-markdown li {
+  margin-bottom: 0.25rem;
+  line-height: 1.6;
+}
+.lexis-markdown strong {
+  font-weight: 600;
+  color: #E8E9EB;
+}
+.lexis-markdown code {
+  background: #1A1D24;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.875em;
+}
+.lexis-markdown pre {
+  background: #1A1D24;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+  border: 1px solid #1F2330;
+}
+.lexis-markdown pre code {
+  background: none;
+  padding: 0;
+}
+.lexis-markdown blockquote {
+  border-left: 3px solid #1B4F8A;
+  padding-left: 1rem;
+  margin-bottom: 0.75rem;
+  color: #8B8F99;
+}
+
+/* Thinking animation */
+@keyframes thinking-dot {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+.thinking-dot:nth-child(1) { animation: thinking-dot 1.4s infinite 0s; }
+.thinking-dot:nth-child(2) { animation: thinking-dot 1.4s infinite 0.2s; }
+.thinking-dot:nth-child(3) { animation: thinking-dot 1.4s infinite 0.4s; }
