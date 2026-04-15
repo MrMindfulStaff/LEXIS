@@ -1,4 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mammoth from 'mammoth';
+
+export const runtime = 'nodejs';
+
+// pdf-parse v2 has no default export — use require for compatibility
+let pdfParse: any = null;
+try {
+  pdfParse = require('pdf-parse');
+} catch {
+  // Will fail gracefully at runtime if pdf-parse unavailable
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,14 +27,17 @@ export async function POST(req: NextRequest) {
     if (ext === 'txt') {
       content = await file.text();
     } else if (ext === 'pdf') {
+      if (!pdfParse) {
+        return NextResponse.json(
+          { error: 'PDF parsing is not available' },
+          { status: 500 }
+        );
+      }
       const buffer = Buffer.from(await file.arrayBuffer());
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const pdfParse = require('pdf-parse');
       const data = await pdfParse(buffer);
       content = data.text;
     } else if (ext === 'docx') {
       const buffer = Buffer.from(await file.arrayBuffer());
-      const mammoth = await import('mammoth');
       const result = await mammoth.extractRawText({ buffer });
       content = result.value;
     } else {
@@ -35,6 +49,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ filename, content });
   } catch (err: any) {
+    console.error('Upload route error:', err);
     return NextResponse.json(
       { error: err.message || 'Failed to parse file' },
       { status: 500 }
