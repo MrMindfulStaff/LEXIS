@@ -15,7 +15,7 @@ export default function AppShell() {
   const [inputValue, setInputValue] = useState('');
 
   const { messages, isStreaming, searchQuery, sendMessage, clearMessages } = useChat();
-  const { documents, uploadFiles, removeDocument, clearDocuments } = useDocuments();
+  const { documents, isUploading, uploadError, uploadFiles, removeDocument, clearDocuments } = useDocuments();
 
   const handleSend = useCallback(
     (text: string) => {
@@ -49,6 +49,8 @@ export default function AppShell() {
           onCaseTypeChange={setActiveCaseType}
           documents={documents}
           onRemoveDocument={removeDocument}
+          isUploading={isUploading}
+          uploadError={uploadError}
         />
       </div>
 
@@ -62,6 +64,8 @@ export default function AppShell() {
         onCaseTypeChange={setActiveCaseType}
         documents={documents}
         onRemoveDocument={removeDocument}
+        isUploading={isUploading}
+        uploadError={uploadError}
       />
 
       {/* Main chat area */}

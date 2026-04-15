@@ -13,6 +13,8 @@ interface SidebarProps {
   onCaseTypeChange: (caseType: CaseType) => void;
   documents: DocumentRef[];
   onRemoveDocument: (index: number) => void;
+  isUploading?: boolean;
+  uploadError?: string | null;
 }
 
 export default function Sidebar({
@@ -22,6 +24,8 @@ export default function Sidebar({
   onCaseTypeChange,
   documents,
   onRemoveDocument,
+  isUploading,
+  uploadError,
 }: SidebarProps) {
   return (
     <div className="flex flex-col h-full bg-lexis-surface border-r border-lexis-border">
@@ -68,7 +72,17 @@ export default function Sidebar({
           Context Documents
         </span>
         <div className="flex flex-col gap-1.5 overflow-y-auto flex-1">
-          {documents.length === 0 ? (
+          {isUploading && (
+            <p className="text-lexis-accent-blue-bright text-xs px-1 animate-pulse">
+              Parsing document...
+            </p>
+          )}
+          {uploadError && (
+            <p className="text-lexis-danger text-xs px-1">
+              {uploadError}
+            </p>
+          )}
+          {documents.length === 0 && !isUploading ? (
             <p className="text-lexis-text-tertiary text-xs px-1 italic">
               No documents attached
             </p>

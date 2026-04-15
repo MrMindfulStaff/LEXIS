@@ -12,6 +12,8 @@ interface MobileDrawerProps {
   onCaseTypeChange: (caseType: CaseType) => void;
   documents: DocumentRef[];
   onRemoveDocument: (index: number) => void;
+  isUploading?: boolean;
+  uploadError?: string | null;
 }
 
 export default function MobileDrawer({
@@ -23,6 +25,8 @@ export default function MobileDrawer({
   onCaseTypeChange,
   documents,
   onRemoveDocument,
+  isUploading,
+  uploadError,
 }: MobileDrawerProps) {
   if (!isOpen) return null;
 
@@ -46,6 +50,8 @@ export default function MobileDrawer({
           }}
           documents={documents}
           onRemoveDocument={onRemoveDocument}
+          isUploading={isUploading}
+          uploadError={uploadError}
         />
       </div>
     </>
