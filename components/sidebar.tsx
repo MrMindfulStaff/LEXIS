@@ -1,15 +1,16 @@
 'use client';
 
-import { Mode, DocumentRef } from '@/lib/types';
-import { scenarios } from '@/lib/scenarios';
+import { Mode, CaseType, DocumentRef } from '@/lib/types';
 import ModeSelector from './mode-selector';
-import ScenarioChip from './scenario-chip';
+import CaseTypeSelector from './case-type-selector';
 import FileChip from './file-chip';
+import DrugsLogo from './drugs-logo';
 
 interface SidebarProps {
   activeMode: Mode;
   onModeChange: (mode: Mode) => void;
-  onScenarioSelect: (text: string, mode: Mode) => void;
+  activeCaseType: CaseType;
+  onCaseTypeChange: (caseType: CaseType) => void;
   documents: DocumentRef[];
   onRemoveDocument: (index: number) => void;
 }
@@ -17,20 +18,29 @@ interface SidebarProps {
 export default function Sidebar({
   activeMode,
   onModeChange,
-  onScenarioSelect,
+  activeCaseType,
+  onCaseTypeChange,
   documents,
   onRemoveDocument,
 }: SidebarProps) {
   return (
     <div className="flex flex-col h-full bg-lexis-surface border-r border-lexis-border">
-      {/* Wordmark */}
-      <div className="px-5 pt-6 pb-4">
-        <h1 className="text-2xl font-bold tracking-[0.2em] text-lexis-text-primary">
+      {/* Branding block */}
+      <div className="px-5 pt-5 pb-4">
+        <h1 className="text-2xl font-bold tracking-[0.2em] text-lexis-text-primary mb-3">
           LEXIS
         </h1>
-        <p className="text-[10px] tracking-[0.25em] uppercase text-lexis-gold font-medium mt-1">
-          D.R.U.G.S. Engine
-        </p>
+        <DrugsLogo />
+        <div className="mt-4 px-3 py-2.5 rounded-md border border-lexis-border bg-lexis-bg">
+          <p className="text-[11px] font-semibold tracking-wider text-lexis-text-primary">
+            HUSCH BLACKWELL
+          </p>
+          <p className="text-[9px] text-lexis-text-tertiary mt-1 leading-relaxed">
+            Built exclusively for Husch Blackwell.
+            <br />
+            Currently in trial &amp; development.
+          </p>
+        </div>
       </div>
 
       <div className="w-full h-px bg-lexis-border" />
@@ -42,18 +52,12 @@ export default function Sidebar({
 
       <div className="w-full h-px bg-lexis-border" />
 
-      {/* Test Scenarios */}
+      {/* Case Type */}
       <div className="px-4 py-4 flex flex-col gap-2">
         <span className="text-[11px] uppercase tracking-wider text-lexis-text-tertiary font-medium px-1">
-          Test Scenarios
+          Case Type
         </span>
-        {scenarios.map((scenario) => (
-          <ScenarioChip
-            key={scenario.title}
-            title={scenario.title}
-            onClick={() => onScenarioSelect(scenario.text, scenario.mode)}
-          />
-        ))}
+        <CaseTypeSelector activeCaseType={activeCaseType} onCaseTypeChange={onCaseTypeChange} />
       </div>
 
       <div className="w-full h-px bg-lexis-border" />
@@ -81,7 +85,7 @@ export default function Sidebar({
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-4 border-t border-lexis-border">
+      <div className="px-5 py-3 border-t border-lexis-border">
         <p className="text-[10px] text-lexis-text-tertiary">LEXIS v2.0</p>
         <p className="text-[9px] text-lexis-text-tertiary mt-0.5 leading-relaxed">
           Not legal advice. Attorney review required.

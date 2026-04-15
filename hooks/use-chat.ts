@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef } from 'react';
-import { Message, Mode, DocumentRef } from '@/lib/types';
+import { Message, Mode, CaseType, DocumentRef } from '@/lib/types';
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -10,7 +10,7 @@ export function useChat() {
   const abortRef = useRef<AbortController | null>(null);
 
   const sendMessage = useCallback(
-    async (text: string, mode: Mode, documents: DocumentRef[]) => {
+    async (text: string, mode: Mode, caseType: CaseType, documents: DocumentRef[]) => {
       const userMsg: Message = {
         id: `user-${Date.now()}`,
         role: 'user',
@@ -44,6 +44,7 @@ export function useChat() {
             messages: apiMessages,
             documents,
             mode,
+            caseType,
           }),
           signal: abortRef.current.signal,
         });

@@ -1,6 +1,6 @@
 'use client';
 
-import { Mode, DocumentRef } from '@/lib/types';
+import { Mode, CaseType, DocumentRef } from '@/lib/types';
 import Sidebar from './sidebar';
 
 interface MobileDrawerProps {
@@ -8,7 +8,8 @@ interface MobileDrawerProps {
   onClose: () => void;
   activeMode: Mode;
   onModeChange: (mode: Mode) => void;
-  onScenarioSelect: (text: string, mode: Mode) => void;
+  activeCaseType: CaseType;
+  onCaseTypeChange: (caseType: CaseType) => void;
   documents: DocumentRef[];
   onRemoveDocument: (index: number) => void;
 }
@@ -18,7 +19,8 @@ export default function MobileDrawer({
   onClose,
   activeMode,
   onModeChange,
-  onScenarioSelect,
+  activeCaseType,
+  onCaseTypeChange,
   documents,
   onRemoveDocument,
 }: MobileDrawerProps) {
@@ -26,12 +28,10 @@ export default function MobileDrawer({
 
   return (
     <>
-      {/* Overlay */}
       <div
         className="fixed inset-0 bg-black/60 z-40"
         onClick={onClose}
       />
-      {/* Drawer */}
       <div className="fixed left-0 top-0 bottom-0 w-[280px] z-50 shadow-2xl">
         <Sidebar
           activeMode={activeMode}
@@ -39,8 +39,9 @@ export default function MobileDrawer({
             onModeChange(mode);
             onClose();
           }}
-          onScenarioSelect={(text, mode) => {
-            onScenarioSelect(text, mode);
+          activeCaseType={activeCaseType}
+          onCaseTypeChange={(ct) => {
+            onCaseTypeChange(ct);
             onClose();
           }}
           documents={documents}

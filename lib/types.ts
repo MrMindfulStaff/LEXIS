@@ -13,14 +13,11 @@ export interface DocumentRef {
   content: string;
 }
 
-export interface Scenario {
-  title: string;
-  mode: Mode;
-  text: string;
-}
+export type CaseType = 'suit' | 'countersuit' | 'motion' | 'appeal';
 
 export interface ChatRequest {
   messages: { role: string; content: string }[];
   documents: DocumentRef[];
   mode: Mode;
+  caseType: CaseType;
 }

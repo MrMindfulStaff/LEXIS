@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Mode } from '@/lib/types';
+import { Mode, CaseType } from '@/lib/types';
 import { useChat } from '@/hooks/use-chat';
 import { useDocuments } from '@/hooks/use-documents';
 import Sidebar from './sidebar';
@@ -10,6 +10,7 @@ import MobileDrawer from './mobile-drawer';
 
 export default function AppShell() {
   const [activeMode, setActiveMode] = useState<Mode>('standard');
+  const [activeCaseType, setActiveCaseType] = useState<CaseType>('suit');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
@@ -18,18 +19,10 @@ export default function AppShell() {
 
   const handleSend = useCallback(
     (text: string) => {
-      sendMessage(text, activeMode, documents);
+      sendMessage(text, activeMode, activeCaseType, documents);
       setInputValue('');
     },
-    [sendMessage, activeMode, documents]
-  );
-
-  const handleScenarioSelect = useCallback(
-    (text: string, mode: Mode) => {
-      setActiveMode(mode);
-      setInputValue(text);
-    },
-    []
+    [sendMessage, activeMode, activeCaseType, documents]
   );
 
   const handleClearSession = useCallback(() => {
@@ -52,7 +45,8 @@ export default function AppShell() {
         <Sidebar
           activeMode={activeMode}
           onModeChange={setActiveMode}
-          onScenarioSelect={handleScenarioSelect}
+          activeCaseType={activeCaseType}
+          onCaseTypeChange={setActiveCaseType}
           documents={documents}
           onRemoveDocument={removeDocument}
         />
@@ -64,7 +58,8 @@ export default function AppShell() {
         onClose={() => setDrawerOpen(false)}
         activeMode={activeMode}
         onModeChange={setActiveMode}
-        onScenarioSelect={handleScenarioSelect}
+        activeCaseType={activeCaseType}
+        onCaseTypeChange={setActiveCaseType}
         documents={documents}
         onRemoveDocument={removeDocument}
       />

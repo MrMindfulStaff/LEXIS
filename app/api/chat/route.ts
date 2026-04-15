@@ -15,7 +15,14 @@ const MODE_PREFIXES: Record<string, string> = {
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, documents, mode } = await req.json();
+    const { messages, documents, mode, caseType } = await req.json();
+
+    const CASE_TYPE_LABELS: Record<string, string> = {
+      suit: 'CASE TYPE: Original Suit. Analyze as plaintiff initiating action.',
+      countersuit: 'CASE TYPE: Countersuit. Analyze as defendant filing counterclaim against plaintiff.',
+      motion: 'CASE TYPE: Motion. Analyze as a motion filing within active litigation.',
+      appeal: 'CASE TYPE: Appeal. Analyze within appellate procedure and standard of review framework.',
+    };
 
     // Build document context blocks
     let documentContext = '';
@@ -38,13 +45,18 @@ export async function POST(req: NextRequest) {
           content = `${documentContext}\n\n${content}`;
         }
 
-        // Apply mode prefix to the latest user message
-        if (
-          idx === messages.length - 1 &&
-          msg.role === 'user' &&
-          mode in MODE_PREFIXES
-        ) {
-          content = `${MODE_PREFIXES[mode]}\n\n${content}`;
+        // Apply case type and mode prefix to the latest user message
+        if (idx === messages.length - 1 && msg.role === 'user') {
+          const prefixes: string[] = [];
+          if (caseType && caseType in CASE_TYPE_LABELS) {
+            prefixes.push(CASE_TYPE_LABELS[caseType]);
+          }
+          if (mode in MODE_PREFIXES) {
+            prefixes.push(MODE_PREFIXES[mode]);
+          }
+          if (prefixes.length > 0) {
+            content = `${prefixes.join('\n\n')}\n\n${content}`;
+          }
         }
 
         return { role: msg.role, content };
