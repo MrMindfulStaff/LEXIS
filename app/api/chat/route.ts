@@ -69,8 +69,8 @@ export async function POST(req: NextRequest) {
       async start(controller) {
         try {
           const stream = anthropic.messages.stream({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 4000,
+            model: 'claude-sonnet-5',
+            max_tokens: 16000,
             system: LEXIS_SYSTEM_PROMPT,
             messages: anthropicMessages,
             tools: [
